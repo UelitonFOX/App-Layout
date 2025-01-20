@@ -11,32 +11,34 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Programa Layout',
+      title: 'Base Layout',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
         fontFamily: 'Roboto',
       ),
-      home: const HomePage(title: 'Programa Layout'),
+      home: const BaseLayout(title: 'Base Layout'),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+class BaseLayout extends StatefulWidget {
+  const BaseLayout({super.key, required this.title});
 
   final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<BaseLayout> createState() => _BaseLayoutState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BaseLayoutState extends State<BaseLayout> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange.shade400,
+        backgroundColor: Colors.blue.shade400,
         elevation: 4.0,
         title: Text(
           widget.title,
@@ -48,76 +50,85 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          // Seção Superior
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: Text(
-                'Layout Superior',
-                style: TextStyle(
-                  color: Colors.brown.shade700,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-          // Card Central
-          Expanded(
-            flex: 6,
-            child: Center(
-              child: Container(
-                width: 220,
-                height: 320,
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade100,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: const Center(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isPortrait = constraints.maxWidth < constraints.maxHeight;
+
+          return Column(
+            children: [
+              // Top Section
+              Expanded(
+                flex: 2,
+                child: Center(
                   child: Text(
-                    'Meu Aplicativo',
+                    'Header Section',
                     style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
+                      color: Colors.grey.shade800,
+                      fontSize: size.width * 0.05,
+                      fontWeight: FontWeight.w600,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
-            ),
-          ),
-          // Seção Inferior
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: Text(
-                'Layout Inferior',
-                style: TextStyle(
-                  color: Colors.brown.shade700,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+
+              // Main Content Section
+              Expanded(
+                flex: 6,
+                child: Center(
+                  child: Container(
+                    width: size.width * 0.7,
+                    height: isPortrait ? size.height * 0.4 : size.height * 0.6,
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade100,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Main Content',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ],
+
+              // Bottom Section
+              Expanded(
+                flex: 2,
+                child: Center(
+                  child: Text(
+                    'Footer Section',
+                    style: TextStyle(
+                      color: Colors.grey.shade800,
+                      fontSize: size.width * 0.05,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Ação do botão flutuante
+          // Action for floating button
         },
-        tooltip: 'Adicionar',
-        backgroundColor: Colors.deepOrange.shade600,
+        tooltip: 'Add',
+        backgroundColor: Colors.blue.shade600,
         child: const Icon(Icons.add, size: 28),
       ),
     );
